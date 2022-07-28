@@ -66,17 +66,17 @@ proxies:
     server: 104.18.11.39
     port: 80
     type: vmess
-    uuid: ff382d09-becd-41cb-8e4f-3e256b27de47
+    uuid: 7fe1460f-53db-4e61-a47e-0f0de369953c
     alterId: 0
     cipher: auto
     tls: false
     skip-cert-verify: true
-    servername: sg1.31vpn.com
+    servername: sg1.v2-ray.us
     network: ws
     ws-opts:
-      path: /fastssh/mamadwew/62c9a3e36d6e2/
+      path: /vmess
       headers:
-        Host: sg1.31vpn.com
+        Host: sg1.v2-ray.us
     udp: true
        
   - name: ID
@@ -91,7 +91,7 @@ proxies:
     servername: id-lb.sshkit.org
     network: ws
     ws-opts:
-      path: /sshkit/mamadid/62c9a4824622e/
+      path: /sshkit/mamadwow/62e30d97a5209/
       headers:
         Host: id-lb.sshkit.org
     udp: true
