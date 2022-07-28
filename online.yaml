@@ -1,0 +1,143 @@
+port: 8989
+socks-port: 1080
+mixed-port: 5555
+allow-lan: true
+bind-address: '*'
+ipv6: false
+mode: rule
+log-level: info
+geodata-mode: true
+tcp-concurrent: true
+
+sniffer:
+  enable: true
+  sniffing:
+    - tls
+    - http
+  skip-domain:
+    - 'Mijia Cloud'
+    - 'dlg.io.mi.com'
+    - '+.apple.com'
+  force-domain:
+    - '+.google.com'
+    - '+.cloudflare.com'
+    - '+.cloudflare.net'
+    - '+.cloudfront.net'
+  port-whitelist:
+    - 443
+    - 80
+    - 8000-9000
+
+tun:
+  enable: true
+  device: meta
+  stack: system
+  dns-hijack:
+    - 'any:53'
+  auto-route: false
+  auto-detect-interface: false
+
+dns:
+  enable: true
+  listen: 0.0.0.0:2323
+  default-nameserver:
+    - 8.8.8.8
+    - 8.8.4.4
+  use-hosts: true
+  enhanced-mode: redir-host
+  nameserver:
+    - 8.8.8.8
+    - 8.8.4.4
+    - https://dns.google/dns-query
+    - tls://dns.google:853
+  fallback:
+    - 1.1.1.1
+    - 1.0.0.1
+    - https://dns.cloudflare.com/dns-query
+    - tls://1dot1dot1dot1.cloudflare-dns.com:853
+  fallback-filter:
+    geoip: true
+    geoip-code: ID
+    geosite:
+      - gfw
+
+proxies:
+  - name: SG
+    server: 104.18.11.39
+    port: 80
+    type: vmess
+    uuid: ff382d09-becd-41cb-8e4f-3e256b27de47
+    alterId: 0
+    cipher: auto
+    tls: false
+    skip-cert-verify: true
+    servername: sg1.31vpn.com
+    network: ws
+    ws-opts:
+      path: /fastssh/mamadwew/62c9a3e36d6e2/
+      headers:
+        Host: sg1.31vpn.com
+    udp: true
+       
+  - name: ID
+    server: 104.18.11.39
+    port: 80
+    type: vmess
+    uuid: 6fea1649-425b-4092-bf53-29792152c925
+    alterId: 0
+    cipher: auto
+    tls: false
+    skip-cert-verify: true
+    servername: id-lb.sshkit.org
+    network: ws
+    ws-opts:
+      path: /sshkit/mamadid/62c9a4824622e/
+      headers:
+        Host: id-lb.sshkit.org
+    udp: true
+    
+  - name: SG2
+    server: 104.18.11.39
+    port: 443
+    type: trojan
+    password: de16cc90-ffa0-11ec-b43c-1239d0255272
+    skip-cert-verify: true
+    sni: sgovh-trojan.bonds.id
+    network: ws
+    ws-opts:
+      path: /howdy
+      headers:
+        Host: sgovh-trojan.bonds.id
+    udp: true 
+   
+      
+proxy-groups:
+  - name: FASTSSH-SSHKIT-HOWDY
+    type: select
+    proxies:
+      - SG
+      - ID
+      - SG2
+      - BALANCE
+      - PING
+  - name: BALANCE
+    type: load-balance
+    strategy: consistent-hashing
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    proxies:
+      - SG
+      - ID
+      - SG2
+
+  - name: PING
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    proxies:
+      - SG
+      - ID
+      - SG2
+
+rules:
+  - MATCH,FASTSSH-SSHKIT-HOWDY
