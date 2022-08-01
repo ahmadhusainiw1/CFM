@@ -117,7 +117,7 @@ proxy-groups:
     proxies:
       - SG
       - ID
-      - SG2
+      - SG 2
       - BALANCE
       - PING
   - name: BALANCE
