@@ -96,7 +96,7 @@ proxies:
         Host: id-lb.sshkit.org
     udp: true
     
-  - name: SG2
+  - name: SG 2
     server: 104.18.11.39
     port: 443
     type: trojan
@@ -128,7 +128,7 @@ proxy-groups:
     proxies:
       - SG
       - ID
-      - SG2
+      - SG 2
 
   - name: PING
     type: url-test
@@ -137,7 +137,7 @@ proxy-groups:
     proxies:
       - SG
       - ID
-      - SG2
+      - SG 2
 
 rules:
   - MATCH,FASTSSH-SSHKIT-HOWDY
